@@ -1,12 +1,13 @@
 import React, { FC, useEffect } from 'react';
 import styles from './Login.module.scss';
-import { Space, Typography, Form, Input, Button, Checkbox } from 'antd';
+import { Space, Typography, Form, Input, Button, Checkbox, message } from 'antd';
 import { UserAddOutlined } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
-import { LOGIN_PATHNAME, REGISTER_PATHNAME } from '../router';
+import { Link, useNavigate } from 'react-router-dom';
+import { LOGIN_PATHNAME, MANAGE_INDEX_PATHNAME, REGISTER_PATHNAME } from '../router';
 import { useForm } from 'antd/es/form/Form';
 import { useRequest } from 'ahooks';
-
+import { loginService } from '../services/user';
+import { setToken } from '../utils/user-token';
 
 const { Title } = Typography;
 
@@ -32,14 +33,27 @@ function getUserForm() {
 
 const Login: FC = () => {
 	const [form] = Form.useForm();
+	const nav = useNavigate();
 
-	// const {run} = useRequest(
-	// 	async 
-	// )
-
+	const { run } = useRequest(
+		async (username: string, password: string) => {
+			const data = await loginService(username, password);
+			return data;
+		},
+		{
+			manual: true,
+			onSuccess(result) {
+				message.success('登录成功');
+				const { token = '' } = result;
+				setToken(token);
+				nav(MANAGE_INDEX_PATHNAME);
+			},
+		}
+	);
 
 	const onFinish = (value: any) => {
-		const { username, password, remeber } = value || {};
+		const { username, password, remeber } = value || {}; 
+		run(username, password);
 
 		if (remeber) {
 			remeberUser(username, password);
