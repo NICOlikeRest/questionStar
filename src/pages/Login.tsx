@@ -14,6 +14,7 @@ const { Title } = Typography;
 const USERNAME_KEY = 'USERNAME';
 const PASSWORD_KEY = 'PASSWORD';
 
+// 记住用户
 function remeberUser(username: string, password: string) {
 	localStorage.setItem(USERNAME_KEY, username);
 	localStorage.setItem(PASSWORD_KEY, password);
@@ -32,9 +33,11 @@ function getUserForm() {
 }
 
 const Login: FC = () => {
+	// 页面表单
 	const [form] = Form.useForm();
 	const nav = useNavigate();
 
+	// 登录函数
 	const { run } = useRequest(
 		async (username: string, password: string) => {
 			const data = await loginService(username, password);
@@ -45,22 +48,26 @@ const Login: FC = () => {
 			onSuccess(result) {
 				message.success('登录成功');
 				const { token = '' } = result;
-				setToken(token);
-				nav(MANAGE_INDEX_PATHNAME);
+				setToken(token); // 设置token
+				nav(MANAGE_INDEX_PATHNAME); // 跳转到问卷列表
 			},
 		}
 	);
 
+	// 表单提交函数
 	const onFinish = (value: any) => {
-		const { username, password, remeber } = value || {}; 
-		run(username, password);
+		const { username, password, remeber } = value || {};
+		run(username, password); // 登录
 
+		// 如果记得，localstorge储存,没有记住就localstorge里删除
 		if (remeber) {
 			remeberUser(username, password);
 		} else {
 			deleteUserFormStorage();
 		}
 	};
+
+	// 页面挂载的时候，就看看localstorge里有没有对应的用户名密码
 	useEffect(() => {
 		const { username, password } = getUserForm();
 		form.setFieldsValue({ username, password });

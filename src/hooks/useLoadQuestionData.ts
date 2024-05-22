@@ -15,7 +15,6 @@ function useLoadQuestionData () {
 
 	const {data, loading, error} = useRequest(load);
 
-
     return {data, loading, error};
 }
 

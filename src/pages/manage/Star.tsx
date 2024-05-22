@@ -9,6 +9,7 @@ import ListPage from '../../components/ListPage';
 const { Title } = Typography;
 
 const Star: FC = () => {
+	// 标星页面，这个isstar肯定都是true啊
 	const { data = {}, loading } = useLoadQuestionListData({ isStar: true });
 	const { list = {}, total = 0 } = data;
 

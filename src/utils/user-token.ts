@@ -4,14 +4,17 @@
 
 const KEY = 'USER_TOKEN';
 
+// 设置token
 export function setToken(token: string) {
-    localStorage.setItem(KEY, token)
+	localStorage.setItem(KEY, token);
 }
 
+// 获取token
 export function getToKen() {
-    return localStorage.getItem(KEY) || ''
+	return localStorage.getItem(KEY) || '';
 }
 
+// 删除token
 export function removeToken() {
-    localStorage.removeItem(KEY)
+	localStorage.removeItem(KEY);
 }

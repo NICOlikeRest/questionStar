@@ -15,6 +15,7 @@ const { Title } = Typography;
 const { confirm } = Modal;
 
 const Trash: FC = () => {
+	// 获取垃圾箱里的数据，其中数据肯定isDeeleted为true
 	const { data = {}, loading, refresh } = useLoadQuestionListData({ isDeleted: true });
 	const { list = {}, total = 0 } = data;
 
@@ -25,6 +26,7 @@ const Trash: FC = () => {
 	const { run: recover } = useRequest(
 		async () => {
 			for await (const id of selectedList) {
+				// 对每条选中的id，都进去相应的更新请求
 				await updateQuestionService(id, { isDeleted: false });
 			}
 		},
@@ -34,7 +36,7 @@ const Trash: FC = () => {
 			onSuccess() {
 				message.success('恢复成功 ');
 				refresh(); // 手动刷新列表
-				setSelectedList([]);
+				setSelectedList([]); // 恢复后对列表滞空
 			},
 		}
 	);
@@ -49,6 +51,7 @@ const Trash: FC = () => {
 		},
 	});
 
+	// 删除文件模态框
 	function delHandler() {
 		confirm({
 			title: '确定彻底删除该问卷吗？',

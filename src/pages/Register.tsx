@@ -12,6 +12,7 @@ const { Title } = Typography;
 const Register: FC = () => {
 	const nav = useNavigate();
 
+	// 注册函数
 	const { run } = useRequest(
 		async (values) => {
 			const { username, password, nickname } = values;

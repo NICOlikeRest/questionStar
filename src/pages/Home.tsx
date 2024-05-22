@@ -11,8 +11,6 @@ const { Title, Paragraph } = Typography;
 const Home: FC = () => {
 	const nav = useNavigate();
 
- 
-
 	return (
 		<div className={styles.container}>
 			<div className={styles.info}>

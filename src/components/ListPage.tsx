@@ -8,14 +8,16 @@ type PropsType = {
 };
 
 const ListPage: FC<PropsType> = (props: PropsType) => {
+	// 获取props传过来的total
 	const { total } = props;
-
+	// 当前页为1
 	const [current, setCurrent] = useState(1);
-
 	const [pageSize, setPageSize] = useState(LIST_PAGE_SIZE);
-	// 1
 	const [searchParmas, setSearchParams] = useSearchParams();
+	const nav = useNavigate();
+	const { pathname } = useLocation();
 
+	// 从路由参数这里获取对应的page和pageSize
 	useEffect(() => {
 		const page = parseInt(searchParmas.get(LIST_PAGE_PARAM_KEY) || '') || 1;
 		setCurrent(page);
@@ -23,8 +25,7 @@ const ListPage: FC<PropsType> = (props: PropsType) => {
 		setPageSize(pageSize);
 	}, [searchParmas]);
 
-	const nav = useNavigate();
-	const { pathname } = useLocation();
+
 	// 当page pageSize 变化 跳转页面
 	function handlePageChange(page: number, pageSize: number) {
 		searchParmas.set(LIST_PAGE_PARAM_KEY, page.toString());
