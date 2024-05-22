@@ -13,7 +13,7 @@ const ListPage: FC<PropsType> = (props: PropsType) => {
 	const [current, setCurrent] = useState(1);
 
 	const [pageSize, setPageSize] = useState(LIST_PAGE_SIZE);
-
+	// 1
 	const [searchParmas, setSearchParams] = useSearchParams();
 
 	useEffect(() => {
