@@ -1,15 +1,7 @@
 import React, { FC, useState } from 'react';
 import styles from './QuestionCard.module.scss';
 import { Button, Divider, Modal, Popconfirm, Space, Tag, message } from 'antd';
-import {
-	CopyOutlined,
-	DeleteOutlined,
-	EditOutlined,
-	ExclamationCircleOutlined,
-	ExclamationOutlined,
-	LineChartOutlined,
-	StarOutlined,
-} from '@ant-design/icons';
+import { CopyOutlined, DeleteOutlined, EditOutlined, ExclamationCircleOutlined, LineChartOutlined, StarOutlined } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRequest } from 'ahooks';
 import { duplicateQuestionService, updateQuestionService } from '../services/question';
@@ -24,6 +16,7 @@ type PropsType = {
 	createAt: string;
 };
 
+// 删除问卷需要用到模态框
 const { confirm } = Modal;
 
 const QuestionCard: FC<PropsType> = (props) => {
@@ -32,6 +25,10 @@ const QuestionCard: FC<PropsType> = (props) => {
 
 	// 修改标星
 	const [isStarState, setIsStarState] = useState(isStar);
+	// 删除的状态
+	const [deleteState, setDeleteState] = useState(false);
+
+	// 修改标星函数
 	const { loading: changeStarLoading, run: changeStar } = useRequest(
 		async () => {
 			await updateQuestionService(_id, { isStar: !isStarState });
@@ -45,6 +42,7 @@ const QuestionCard: FC<PropsType> = (props) => {
 		}
 	);
 
+	// 复制问卷函数
 	const { run: dupilicate, loading: dupilicateLoading } = useRequest(
 		async () => {
 			return await duplicateQuestionService(_id);
@@ -58,7 +56,7 @@ const QuestionCard: FC<PropsType> = (props) => {
 		}
 	);
 
-	const [deleteState, setDeleteState] = useState(false);
+	// 删除问卷函数
 	const { run: deleteHandle, loading: deleteLoading } = useRequest(async () => updateQuestionService(_id, { isDeleted: true }), {
 		manual: true,
 		onSuccess() {
@@ -66,6 +64,7 @@ const QuestionCard: FC<PropsType> = (props) => {
 		},
 	});
 
+	// 删除问卷弹框
 	function delHandler() {
 		confirm({
 			title: '确定要删除这个问卷吗？',
@@ -78,7 +77,7 @@ const QuestionCard: FC<PropsType> = (props) => {
 			cancelText: '取消',
 		});
 	}
-	// 卡片是否已经删除了
+	// 卡片是否已经删除了，如果删除了的话，就不要让他再渲染了
 	if (deleteState) {
 		return null;
 	}
