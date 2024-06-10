@@ -1,8 +1,9 @@
 import { FC, useEffect } from 'react';
-import { QuestionInputPropsType } from './interface';
+import { QuestionTextareaPropsType } from './interface';
 import { Form, Input } from 'antd';
+import TextArea from 'antd/es/input/TextArea';
 
-const PropComponent: FC<QuestionInputPropsType> = (props: QuestionInputPropsType) => {
+const PropComponent: FC<QuestionTextareaPropsType> = (props: QuestionTextareaPropsType) => {
 	const { title, placeholder, onChange, disabled } = props;
 	const [form] = Form.useForm();
 
@@ -22,7 +23,7 @@ const PropComponent: FC<QuestionInputPropsType> = (props: QuestionInputPropsType
 				<Input />
 			</Form.Item>
 			<Form.Item label="Placeholder" name="placeholder">
-				<Input />
+				<TextArea />
 			</Form.Item>
 		</Form>
 	);

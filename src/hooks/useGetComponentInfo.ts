@@ -11,11 +11,13 @@ function useGetComponentInfo() {
     const selectedId = components?.selectedId || "";
 
     const selectedComponent = componentList.find(c => c.fe_id === selectedId)
+    const copiedComponent = components?.copiedComponent || null;
 
     return {
         componentList,
         selectedId,
-        selectedComponent
+        selectedComponent,
+        copiedComponent
     }
 }
 

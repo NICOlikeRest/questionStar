@@ -9,6 +9,8 @@ import { useDispatch } from 'react-redux';
 import { changeSelectedId } from '../../../store/componentsReducer';
 import LeftPannel from './LeftPanel';
 import RightPanel from './RightPanel';
+import EditHeader from './EditHeader';
+import useBindCanvasKeyPress from '../../../hooks/useBindCanvasKeyPress';
 
 const Edit: FC = () => {
 	const { loading } = useLoadQuestionData();
@@ -18,11 +20,12 @@ const Edit: FC = () => {
 	function clearSelectedId() {
 		dispatch(changeSelectedId(''));
 	}
+	useBindCanvasKeyPress();
 
 	return (
 		<>
 			<div className={styles.container}>
-				<div style={{ backgroundColor: '#fff', height: '40px' }}>Header</div>
+				<EditHeader />
 				<div className={styles['container-wrapper']}>
 					<div className={styles.content}>
 						<div className={styles.left}>

@@ -8,6 +8,7 @@ import { ComponentInfoType, changeSelectedId } from '../../../store/componentsRe
 import { getComponetConfByType } from '../../../components/QuestionComponents';
 import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
+import useBindCanvasKeyPress from '../../../hooks/useBindCanvasKeyPress';
 
 type PropsType = {
 	loading: boolean;
@@ -29,6 +30,8 @@ const EditCanvas: FC<PropsType> = ({ loading }) => {
 			</div>
 		);
 	}
+	// useBindCanvasKeyPress();
+
 	const { componentList, selectedId } = useGetComponentInfo();
 	console.log('selected', selectedId);
 
@@ -41,21 +44,25 @@ const EditCanvas: FC<PropsType> = ({ loading }) => {
 
 	return (
 		<div className={styles.canvas}>
-			{componentList.map((c) => {
-				const { fe_id } = c;
+			{componentList
+				.filter((c) => !c.isHidden)
+				.map((c) => {
+					const { fe_id, isLocked } = c;
 
-				const wrapperDefaultName = styles['component-wrapper'];
-				const selectedClassName = styles.selected;
-				const wrapperClassName = classNames({
-					[wrapperDefaultName]: true,
-					[selectedClassName]: fe_id === selectedId,
-				});
-				return (
-					<div key={fe_id} className={wrapperClassName} onClick={(e) => handleClick(e, fe_id)}>
-						<div className={styles.component}>{genComponent(c)}</div>
-					</div>
-				);
-			})}
+					const wrapperDefaultName = styles['component-wrapper'];
+					const selectedClassName = styles.selected;
+					const lockedClassName = styles.locked;
+					const wrapperClassName = classNames({
+						[wrapperDefaultName]: true,
+						[selectedClassName]: fe_id === selectedId,
+						[lockedClassName]: isLocked,
+					});
+					return (
+						<div key={fe_id} className={wrapperClassName} onClick={(e) => handleClick(e, fe_id)}>
+							<div className={styles.component}>{genComponent(c)}</div>
+						</div>
+					);
+				})}
 		</div>
 	);
 };
