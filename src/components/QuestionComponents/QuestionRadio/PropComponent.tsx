@@ -1,7 +1,8 @@
 import { FC, useEffect } from 'react';
-import { QuestionRadioPropsType } from './interface';
+import { OptionType, QuestionRadioPropsType } from './interface';
 import { Checkbox, Form, Input, Select, Button, Space } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import { nanoid } from '@reduxjs/toolkit';
 
 const PropComponent: FC<QuestionRadioPropsType> = (props: QuestionRadioPropsType) => {
 	const { title, isVertival, value, options, onChange, disabled } = props;
@@ -12,9 +13,17 @@ const PropComponent: FC<QuestionRadioPropsType> = (props: QuestionRadioPropsType
 	}, [title, isVertival, value, options]);
 
 	function handleValuesChange() {
-		if (onChange) {
-			onChange(form.getFieldsValue());
-		}
+		if (onChange == null) return;
+		const newValues = form.getFieldsValue() as QuestionRadioPropsType;
+
+		const { options = [] } = newValues;
+		console.log('new', newValues);
+
+		options.forEach((opt) => {
+			if (opt.value) return;
+			opt.value = nanoid(5);
+		});
+		onChange(newValues);
 	}
 	return (
 		<Form layout="vertical" initialValues={{ title, isVertival, value, options }} onValuesChange={handleValuesChange} disabled={disabled} form={form}>
@@ -27,7 +36,24 @@ const PropComponent: FC<QuestionRadioPropsType> = (props: QuestionRadioPropsType
 						<>
 							{fields.map(({ key, name }, index) => (
 								<Space key={key} align="baseline">
-									<Form.Item name={[name, 'text']} rules={[{ required: true, message: '请输入选项文字' }]}>
+									<Form.Item
+										name={[name, 'text']}
+										rules={[
+											{ required: true, message: '请输入选项文字' },
+											{
+												validator: (_, text) => {
+													const { options = [] } = form.getFieldsValue();
+
+													let num = 0;
+													options.forEach((opt: OptionType) => {
+														if (opt.text === text) num++;
+													});
+													if (num === 1) return Promise.resolve();
+													return Promise.reject(new Error('和其他选项重复了'));
+												},
+											},
+										]}
+									>
 										<Input placeholder="请输入选项文字" />
 									</Form.Item>
 									{index > 1 && <MinusCircleOutlined onClick={() => remove(name)} />}

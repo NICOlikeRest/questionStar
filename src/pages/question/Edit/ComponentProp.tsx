@@ -19,7 +19,6 @@ const ComponentProp: FC = () => {
 	if (componentConf == null) return <NoProp />;
 
 	function changeProps(newProps: ComponentPropsType) {
-		console.log('newProps', newProps);
 		if (selectedComponent == null) return;
 
 		const { fe_id } = selectedComponent;

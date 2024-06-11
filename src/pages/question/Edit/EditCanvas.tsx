@@ -33,7 +33,6 @@ const EditCanvas: FC<PropsType> = ({ loading }) => {
 	// useBindCanvasKeyPress();
 
 	const { componentList, selectedId } = useGetComponentInfo();
-	console.log('selected', selectedId);
 
 	const dispatch = useDispatch();
 
