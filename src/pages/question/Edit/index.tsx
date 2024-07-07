@@ -11,39 +11,45 @@ import LeftPannel from './LeftPanel';
 import RightPanel from './RightPanel';
 import EditHeader from './EditHeader';
 import useBindCanvasKeyPress from '../../../hooks/useBindCanvasKeyPress';
+import useGetPageInfo from '../../../hooks/useGetPageInfo';
+import { useTitle } from 'ahooks';
 
 const Edit: FC = () => {
-	const { loading } = useLoadQuestionData();
+  const { loading } = useLoadQuestionData();
 
-	const dispatch = useDispatch();
+  const { title } = useGetPageInfo();
 
-	function clearSelectedId() {
-		dispatch(changeSelectedId(''));
-	}
-	useBindCanvasKeyPress();
+  useTitle(`问卷编辑 - ${title}`);
 
-	return (
-		<>
-			<div className={styles.container}>
-				<EditHeader />
-				<div className={styles['container-wrapper']}>
-					<div className={styles.content}>
-						<div className={styles.left}>
-							<LeftPannel />
-						</div>
-						<div className={styles.main} onClick={clearSelectedId}>
-							<div className={styles['canvas-wrapper']}>
-								<EditCanvas loading={loading} />
-							</div>
-						</div>
-						<div className={styles.right}>
-							<RightPanel />
-						</div>
-					</div>
-				</div>
-			</div>
-		</>
-	);
+  const dispatch = useDispatch();
+
+  function clearSelectedId() {
+    dispatch(changeSelectedId(''));
+  }
+  useBindCanvasKeyPress();
+
+  return (
+    <>
+      <div className={styles.container}>
+        <EditHeader />
+        <div className={styles['container-wrapper']}>
+          <div className={styles.content}>
+            <div className={styles.left}>
+              <LeftPannel />
+            </div>
+            <div className={styles.main} onClick={clearSelectedId}>
+              <div className={styles['canvas-wrapper']}>
+                <EditCanvas loading={loading} />
+              </div>
+            </div>
+            <div className={styles.right}>
+              <RightPanel />
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default Edit;

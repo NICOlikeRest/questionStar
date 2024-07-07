@@ -4,7 +4,7 @@ import { ComponentsStateType } from "../store/componentsReducer";
 
 // 自定义 hook
 function useGetComponentInfo() {
-    const components = useSelector((state: StateType) => state.components) as ComponentsStateType;
+    const components = useSelector((state: StateType) => state.components.present) as ComponentsStateType;
 
     // 非空判断
     const componentList = components?.componentList || [];

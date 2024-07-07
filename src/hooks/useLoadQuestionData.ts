@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { useRequest } from "ahooks";
 import { useDispatch } from "react-redux";
 import { resetComponents } from "../store/componentsReducer";
+import { resetPageInfo } from "../store/PageInfoReducer";
 
 
 function useLoadQuestionData () {
@@ -25,7 +26,7 @@ function useLoadQuestionData () {
 	useEffect(() => {
 		if (!data) return;
 
-		const {title = '', componentList = []} = data
+		const {title = '', componentList = [], desc = "", js = "", css = "", isPulished = false} = data
 
 		let selectedId = ''
 		if (componentList.length > 0) {
@@ -33,6 +34,8 @@ function useLoadQuestionData () {
 		}
 
 		dispatch(resetComponents({componentList, selectedId, copiedComponent:null}))
+
+		dispatch(resetPageInfo({title, desc, js, css, isPulished}))
 
 	}, [data])
 

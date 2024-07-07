@@ -3,7 +3,7 @@ import axios from "axios";
 import { getToKen } from "../utils/user-token";
 
 const instance = axios.create({
-    timeout: 10 * 1000
+    timeout: 5 * 1000
 })
 
 // requetion 拦截： 每次请求都带上 token

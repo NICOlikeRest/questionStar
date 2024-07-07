@@ -3,6 +3,7 @@ import { ComponentPropsType } from "../../components/QuestionComponents"
 import {produce} from 'immer'
 import { getNextSelectedId, insertNewComponent } from "./utils"
 import cloneDeep from 'lodash.clonedeep'
+import { arrayMove } from "@dnd-kit/sortable"
 
 
 export type ComponentInfoType = {
@@ -143,6 +144,14 @@ export const componentsSlice = createSlice({
                 const curComp = draft.componentList.find(c => c.fe_id === fe_id)
                 if (curComp) curComp.title = title
             }
+        ),
+        // 移动组件位置
+        moveComponent: produce(
+            (draft: ComponentsStateType, action: PayloadAction<{oldIndex: number; newIndex: number}>) => {
+                const {componentList: curComponentList} = draft;
+                const {oldIndex, newIndex} = action.payload;
+                draft.componentList  =arrayMove(curComponentList, oldIndex, newIndex);
+            }
         )
     }
 })
@@ -159,7 +168,8 @@ export const {
     pasteCopiedComponent,
     selectPrevComponent,
     selectNextComponent,
-    changeComponentTitle
+    changeComponentTitle,
+    moveComponent
 } = componentsSlice.actions;
 
 export default componentsSlice.reducer;
